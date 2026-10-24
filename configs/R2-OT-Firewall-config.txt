@@ -1,1 +1,91 @@
-
+Current configuration : 1099 bytes
+!
+version 16.6.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname r1
+!
+!
+!
+enable secret 5 ******
+enable password ****
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ ip address 10.10.50.1 255.255.255.0
+ ip access-group OT-FIREWALL out
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/1
+ ip address 172.16.1.2 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 192.168.10.0 255.255.255.0 172.16.1.1 
+ip route 172.16.2.0 255.255.255.0 172.16.1.1 
+!
+ip flow-export version 9
+!
+!
+ip access-list extended OT-FIREWALL
+ permit tcp host 172.16.2.100 host 10.10.50.100 eq 502
+ permit tcp host 172.16.2.100 host 10.10.50.100 eq www
+ permit icmp host 172.16.2.100 host 10.10.50.100
+ deny ip any any
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ password *****
+ login
+!
+!
+!
+end
